@@ -2,6 +2,18 @@
 
 Aplicació mòbil per a la plataforma catalansalmon.com.
 
+## Funcionalitat
+
+- ✅ Login
+- ✅ Comunitats properes
+- ✅ Llistat de comunitats
+- ✅ Tauler de comunitat
+- ✅ Enviar comentaris
+- ❌ Crear posts al tauler
+- ❌ Llistat usuaris
+
+Les funcions marcades amb una creu s'aniran implementant de mica en mica.
+
 ## Desenvolupament
 
 ### Configuració recomanada
