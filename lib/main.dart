@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
               onSurface: Colors.black,
             ),
           ),
-          home: const IntroPage()),
+          home: const IntroPage(shouldAttemptLogin: true)),
     );
   }
 }

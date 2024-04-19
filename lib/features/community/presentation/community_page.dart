@@ -8,6 +8,7 @@ import 'package:catalansalmon_flutter/features/community/model/community_details
 import 'package:catalansalmon_flutter/features/community/model/community_member.dart';
 import 'package:catalansalmon_flutter/features/community/model/community_post.dart';
 import 'package:catalansalmon_flutter/features/community/presentation/member_avatar.dart';
+import 'package:catalansalmon_flutter/features/intro/presentation/intro_page.dart';
 import 'package:catalansalmon_flutter/features/post/presentation/post_detail_page.dart';
 import 'package:catalansalmon_flutter/secrets.dart';
 import 'package:catalansalmon_flutter/model/community.dart';
@@ -68,6 +69,11 @@ class _CommunityPageState extends State<CommunityPage> {
             const SizedBox(width: 8),
             Text(widget.community.nom)
           ]),
+          leading: IconButton(onPressed: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const IntroPage(shouldAttemptLogin: false))
+            );
+          },icon: Icon(Icons.adaptive.arrow_back_rounded)),
           actions: [
             BlocBuilder<CommunityCubit, CommunityState>(
                 builder: (context, state) {

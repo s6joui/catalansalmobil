@@ -12,9 +12,9 @@ class IntroCubit extends Cubit<IntroState> {
 
   IntroCubit(this._authRepository, this._communityRepository) : super(InitIntroState());
 
-  Future<void> startIntroFlow() async {
+  Future<void> startIntroFlow(bool shouldAttemptLogin) async {
     await _authRepository.readCredentials();
-    if (_authRepository.hasSavedCredentials()) {
+    if (shouldAttemptLogin && _authRepository.hasSavedCredentials()) {
       _attemptLogin();
     } else {
       fetchNearbyCommunities();

@@ -13,7 +13,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class IntroPage extends StatefulWidget {
-  const IntroPage({super.key});
+  const IntroPage({super.key, required this.shouldAttemptLogin});
+
+  final bool shouldAttemptLogin;
 
   @override
   State<IntroPage> createState() => _IntroPageState();
@@ -27,7 +29,7 @@ class _IntroPageState extends State<IntroPage> {
         final authRepo = context.read<AuthRepository>();
         final repo = CommunityRepository();
         final cubit = IntroCubit(authRepo, repo);
-        cubit.startIntroFlow();
+        cubit.startIntroFlow(widget.shouldAttemptLogin);
         return cubit;
       },
       child: Scaffold(
@@ -40,12 +42,9 @@ class _IntroPageState extends State<IntroPage> {
                 });
               }
               if (state is LoginSuccessIntroState) {
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => CommunityPage.fromDetails(state.details))
-                ).then((_) {
-                  // When coming back
-                  context.read<IntroCubit>().fetchNearbyCommunities();
-                });
+                );
               }
             },
             builder: (context, state) {
@@ -80,7 +79,7 @@ class CommunitySelectionWidget extends StatelessWidget {
             const SizedBox(height: 24),
             ...communities.map((com) {
               return CommunityButton(title: com.nom, color: com.color, onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => CommunityPage(community: com)));
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => CommunityPage(community: com)));
               },);
             }),
             const SizedBox(height: 8),
