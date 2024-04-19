@@ -1,0 +1,38 @@
+name: Releases
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      api_url: ${{ secrets.API_URL }}
+      mapbox_api_key: ${{ secrets.MAPBOX_API_KEY }}
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Create secrets file
+        run: |
+          cat << EOF > lib/secrets.dart
+          const apiUrl = '${{ env.api_url }}';
+
+          const mapBoxApiKey = '${{ env.mapbox_api_key }}';
+          EOF
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.16.9
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build apk
+      - run: cp build/app/outputs/flutter-apk/app-release.apk catalansalmon-b${{ github.run_number }}.apk
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: catalansalmon-b${{ github.run_number }}.apk
