@@ -72,10 +72,13 @@ class CommunityRepository {
   Future<List<CommunityPost>> getCommunityPosts(String communityId, [bool bypassCache = false]) async {
     final uri = Uri.parse('$apiUrl/comunitats/$communityId/posts');
     log('HTTP GET $uri');
-    final response = await http.get(uri, headers: <String, String>{
+    final headers = {
       'Accept': 'application/json',
-      'x-apicache-bypass': bypassCache.toString()
-    });
+    };
+    if (bypassCache) {
+      headers['x-apicache-bypass'] = 'true';
+    }
+    final response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {
       final List list = json.decode(response.body);
       final List<CommunityPost> result =
