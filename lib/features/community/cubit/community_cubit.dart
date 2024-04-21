@@ -15,10 +15,10 @@ class CommunityCubit extends Cubit<CommunityState> {
       this._community, this._communityRepository, this._authRepository)
       : super(InitCommunityState());
 
-  Future<void> fetchContent(CommunityDetails? details) async {
+  Future<void> fetchContent(CommunityDetails? details, {bool bypassCache = false}) async {
     emit(LoadingCommunityState());
     try {
-      final posts = await _communityRepository.getCommunityPosts(_community.id);
+      final posts = await _communityRepository.getCommunityPosts(_community.id, bypassCache);
       if (details == null) {
         final details = await _communityRepository.getCommunityDetails(_community.id);
         emit(ResponseCommunityState(_community, details, posts, _authRepository.isLoggedIn()));

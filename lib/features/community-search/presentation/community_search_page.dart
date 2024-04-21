@@ -43,7 +43,7 @@ class _CommunitySearchPageState extends State<CommunitySearchPage> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text('${com.numUsuaris}', style: TextStyle(color: Colors.grey)),
+                          Text('${com.numUsuaris}', style: const TextStyle(color: Colors.grey)),
                           const SizedBox(width: 8),
                           const Icon(Icons.people_alt_outlined, color: Colors.grey)
                         ]

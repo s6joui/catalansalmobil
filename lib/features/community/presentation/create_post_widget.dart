@@ -1,29 +1,28 @@
-
 import 'package:catalansalmon_flutter/data/community_repo.dart';
 import 'package:catalansalmon_flutter/features/auth/data/auth_repository.dart';
-import 'package:catalansalmon_flutter/features/post/cubit/comment_cubit.dart';
-import 'package:catalansalmon_flutter/features/post/cubit/comment_state.dart';
-import 'package:catalansalmon_flutter/features/post/model/post_comment.dart';
+import 'package:catalansalmon_flutter/features/community/cubit/create_post_cubit.dart';
+import 'package:catalansalmon_flutter/features/community/cubit/create_post_state.dart';
 import 'package:catalansalmon_flutter/widgets/cam_text_field.dart';
 import 'package:catalansalmon_flutter/widgets/globe_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PostCreateWidget extends StatefulWidget {
-  const PostCreateWidget({super.key, required this.communityId, required this.postId, this.commentResultHandler});
+class CreatePostWidget extends StatefulWidget {
+  const CreatePostWidget({super.key, this.postResultHandler, required this.communityId});
 
   final String communityId;
-  final String postId;
-  final void Function(List<PostComment>?)? commentResultHandler;
+  final void Function()? postResultHandler;
 
   @override
-  State<PostCreateWidget> createState() =>
-      _PostCreateWidgetState();
+  State<CreatePostWidget> createState() =>
+      _CreatePostWidgetState();
 }
 
-class _PostCreateWidgetState extends State<PostCreateWidget> {
-  final _commentTextController = TextEditingController();
+class _CreatePostWidgetState
+    extends State<CreatePostWidget> {
+  final _titleTextController = TextEditingController();
+  final _bodyTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +30,19 @@ class _PostCreateWidgetState extends State<PostCreateWidget> {
       create: (context) {
         final repo = CommunityRepository();
         final authRepo = context.read<AuthRepository>();
-        return CommentCubit(authRepo, repo, widget.communityId, widget.postId);
+        return CreatePostCubit(authRepo, repo, widget.communityId);
       },
       child: SafeArea(
           child: Padding(
               padding: const EdgeInsets.all(16),
-              child: BlocConsumer<CommentCubit,CommentState>(
+              child: BlocConsumer<CreatePostCubit,CreatePostState>(
                 listener: ((context, state) {
-                  if (state is SuccessCommentState) {
-                    widget.commentResultHandler?.call(state.comments);
+                  if (state is SuccessCreatePostState) {
+                    widget.postResultHandler?.call();
                   }
                 }),
                 builder: (context, state) {
-                if (state is ErrorCommentState) {
+                if (state is ErrorCreatePostState) {
                   return SizedBox(
                       width: double.infinity,
                       height: 250,
@@ -85,13 +84,13 @@ class _PostCreateWidgetState extends State<PostCreateWidget> {
                         ],
                       )));
                 }
-                if (state is SendingCommentState) {
+                if (state is SendingCreatePostState) {
                   return const SizedBox(
                       width: double.infinity,
                       height: 250,
                       child: Center(child: GlobeLogo()));
                 }
-                if (state is SuccessCommentState) {
+                if (state is SuccessCreatePostState) {
                   return SizedBox(
                       width: double.infinity,
                       height: 250,
@@ -130,34 +129,38 @@ class _PostCreateWidgetState extends State<PostCreateWidget> {
                 }
                   return SingleChildScrollView(
                     child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                      const SizedBox(height: 16),
-                      const Text('Escriu el teu comentari:'),
-                      const SizedBox(height: 16),
-                      CAMTextField(
-                          keyboardType: TextInputType.multiline,
-                          autofocus: true,
-                          maxLines: null,
-                          controller: _commentTextController),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                          width: double.infinity,
-                          height: 44,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                if (_commentTextController.text.isEmpty) {
-                                  return;
-                                }
-                                context.read<CommentCubit>().createComment(_commentTextController.text);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black,
-                                  foregroundColor: Colors.white),
-                              child: const Text('Envia'))),
-                    ]
-                  )
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                  const SizedBox(height: 16),
+                  const Text('Escriu el teu post:'),
+                  const SizedBox(height: 16),
+                  CAMTextField(
+                    hintText: 'Títol',
+                    autofocus: true,
+                    controller: _titleTextController,
+                  ),
+                  const SizedBox(height: 8),
+                  CAMTextField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 5,
+                      hintText: 'Contingut',
+                      textInputAction: TextInputAction.newline,
+                      showsClearButton: false,
+                      controller: _bodyTextController),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                      width: double.infinity,
+                      height: 44,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            context.read<CreatePostCubit>().createPost(_titleTextController.text, _bodyTextController.text);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.black,
+                              foregroundColor: Colors.white),
+                          child: const Text('Envia'))),
+                ])
                 );
               })
           )),

@@ -6,6 +6,7 @@ import 'package:catalansalmon_flutter/features/community/model/community_post.da
 import 'package:catalansalmon_flutter/features/community/model/community_response.dart';
 import 'package:catalansalmon_flutter/features/post/model/post_comment.dart';
 import 'package:catalansalmon_flutter/model/community.dart';
+import 'package:catalansalmon_flutter/model/success_response.dart';
 import 'package:catalansalmon_flutter/secrets.dart';
 import 'package:http/http.dart' as http;
 
@@ -68,11 +69,12 @@ class CommunityRepository {
     }
   }
 
-  Future<List<CommunityPost>> getCommunityPosts(String communityId) async {
+  Future<List<CommunityPost>> getCommunityPosts(String communityId, [bool bypassCache = false]) async {
     final uri = Uri.parse('$apiUrl/comunitats/$communityId/posts');
     log('HTTP GET $uri');
     final response = await http.get(uri, headers: <String, String>{
       'Accept': 'application/json',
+      'x-apicache-bypass': bypassCache.toString()
     });
     if (response.statusCode == 200) {
       final List list = json.decode(response.body);
@@ -87,7 +89,6 @@ class CommunityRepository {
   Future<List<PostComment>> getPostComments(
       String communityId, String postId) async {
     final uri = Uri.parse('$apiUrl/comunitats/$communityId/posts/$postId');
-    log('HTTP GET $uri');
     final response = await http.get(uri, headers: <String, String>{
       'Accept': 'application/json',
     });
@@ -96,6 +97,39 @@ class CommunityRepository {
       final List<PostComment> result =
           list.map((item) => PostComment.fromMap(item)).toList();
       return result;
+    } else {
+      throw "Error ${response.statusCode}";
+    }
+  }
+
+  Future<List<PostComment>> createComment(String token, String communityId, String postId, String comment) async {
+    final uri = Uri.parse('$apiUrl/comunitats/$communityId/posts/$postId');
+    final response = await http.post(uri, headers: <String, String>{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'token': token,
+    }, body: json.encode(<String, String>{'comment': comment}));
+    if (response.statusCode == 200) {
+      final List list = json.decode(response.body);
+      final List<PostComment> result =
+          list.map((item) => PostComment.fromMap(item)).toList();
+      return result;
+    } else {
+      throw "Error ${response.statusCode}";
+    }
+  }
+
+  Future<bool> createPost(String token, String communityId, String title, String body) async {
+    final uri = Uri.parse('$apiUrl/comunitats/$communityId/posts');
+    final response = await http.post(uri, headers: <String, String>{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'token': token,
+    }, body: json.encode(<String, String>{'title': title, 'body': body}));
+    if (response.statusCode == 200) {
+      final success = SuccesReponse.fromJson(response.body).success;
+      if (!success) { throw "Error"; }
+      return success;
     } else {
       throw "Error ${response.statusCode}";
     }

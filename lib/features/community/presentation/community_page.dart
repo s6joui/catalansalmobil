@@ -7,13 +7,13 @@ import 'package:catalansalmon_flutter/features/community/cubit/community_state.d
 import 'package:catalansalmon_flutter/features/community/model/community_details.dart';
 import 'package:catalansalmon_flutter/features/community/model/community_member.dart';
 import 'package:catalansalmon_flutter/features/community/model/community_post.dart';
+import 'package:catalansalmon_flutter/features/community/presentation/create_post_widget.dart';
 import 'package:catalansalmon_flutter/features/community/presentation/member_avatar.dart';
 import 'package:catalansalmon_flutter/features/intro/presentation/intro_page.dart';
 import 'package:catalansalmon_flutter/features/post/presentation/post_detail_page.dart';
 import 'package:catalansalmon_flutter/secrets.dart';
 import 'package:catalansalmon_flutter/model/community.dart';
 import 'package:catalansalmon_flutter/utils/widget_extensions.dart';
-import 'package:catalansalmon_flutter/widgets/cam_text_field.dart';
 import 'package:catalansalmon_flutter/widgets/color_dot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -70,9 +70,13 @@ class _CommunityPageState extends State<CommunityPage> {
             Text(widget.community.nom)
           ]),
           leading: IconButton(onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const IntroPage(shouldAttemptLogin: false))
-            );
+            if(Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            } else {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const IntroPage(shouldAttemptLogin: false))
+              );
+            }
           },icon: Icon(Icons.adaptive.arrow_back_rounded)),
           actions: [
             BlocBuilder<CommunityCubit, CommunityState>(
@@ -184,8 +188,9 @@ class _CommunityBody extends StatelessWidget {
                                           bottom: MediaQuery.of(innerContext)
                                               .viewInsets
                                               .bottom),
-                                      child:
-                                          const _CommunityPostCreationWidget(),
+                                      child: CreatePostWidget(communityId: community.id, postResultHandler: () {
+                                        context.read<CommunityCubit>().fetchContent(null, bypassCache: true);
+                                      },),
                                     );
                                   });
                             },
@@ -270,13 +275,13 @@ class _CommunityBody extends StatelessWidget {
 
 extension CommunityExtension on Community {
   String mapUrl() {
-    return "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/$lng,$lat,10/400x200?access_token=${mapBoxApiKey}";
+    return "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/$lng,$lat,10/400x200?access_token=$mapBoxApiKey";
   }
 }
 
 extension CommunityDetailsExtension on CommunityDetails {
   String mapUrl() {
-    return "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/$lng,$lat,10/400x200?access_token=${mapBoxApiKey}";
+    return "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/$lng,$lat,10/400x200?access_token=$mapBoxApiKey";
   }
 }
 
@@ -436,7 +441,7 @@ class _CommunityMemberWidget extends StatelessWidget {
 }
 
 class _CommunityInfoSection extends StatelessWidget {
-  const _CommunityInfoSection({super.key, required this.details});
+  const _CommunityInfoSection({required this.details});
 
   final CommunityDetails details;
 
@@ -516,7 +521,7 @@ class _CommunityInfoSection extends StatelessWidget {
 }
 
 class _CommunityPageSkeleton extends StatefulWidget {
-  const _CommunityPageSkeleton({super.key, required this.community});
+  const _CommunityPageSkeleton({required this.community});
 
   final Community community;
 
@@ -645,58 +650,5 @@ class _SectionTitle extends StatelessWidget {
             : const SizedBox()
       ],
     );
-  }
-}
-
-class _CommunityPostCreationWidget extends StatefulWidget {
-  const _CommunityPostCreationWidget({super.key});
-
-  @override
-  State<_CommunityPostCreationWidget> createState() =>
-      __CommunityPostCreationWidgetState();
-}
-
-class __CommunityPostCreationWidgetState
-    extends State<_CommunityPostCreationWidget> {
-  final _titleTextController = TextEditingController();
-  final _bodyTextController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-        child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: SingleChildScrollView(
-                child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                  const SizedBox(height: 16),
-                  const Text('Escriu el teu post:'),
-                  const SizedBox(height: 16),
-                  CAMTextField(
-                    hintText: 'Títol',
-                    autofocus: true,
-                    controller: _titleTextController,
-                  ),
-                  const SizedBox(height: 8),
-                  CAMTextField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 5,
-                      hintText: 'Contingut',
-                      textInputAction: TextInputAction.newline,
-                      showsClearButton: false,
-                      controller: _bodyTextController),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                      width: double.infinity,
-                      height: 44,
-                      child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white),
-                          child: const Text('Envia'))),
-                ]))));
   }
 }

@@ -1,11 +1,11 @@
+import 'package:catalansalmon_flutter/data/community_repo.dart';
 import 'package:catalansalmon_flutter/features/auth/data/auth_repository.dart';
 import 'package:catalansalmon_flutter/features/post/cubit/comment_state.dart';
-import 'package:catalansalmon_flutter/features/post/data/posts_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CommentCubit extends Cubit<CommentState> {
 
-  final PostsRepository _repo;
+  final CommunityRepository _repo;
   final AuthRepository _authRepository;
 
   final String communityId;
