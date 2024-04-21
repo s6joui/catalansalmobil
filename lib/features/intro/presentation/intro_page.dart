@@ -79,7 +79,7 @@ class CommunitySelectionWidget extends StatelessWidget {
             const SizedBox(height: 24),
             ...communities.map((com) {
               return CommunityButton(title: com.nom, color: com.color, onPressed: () {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => CommunityPage(community: com)));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => CommunityPage(community: com)));
               },);
             }),
             const SizedBox(height: 8),
