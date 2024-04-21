@@ -1,7 +1,7 @@
 
 import 'package:catalansalmon_flutter/features/auth/data/auth_repository.dart';
-import 'package:catalansalmon_flutter/features/post/cubit/post_create_cubit.dart';
-import 'package:catalansalmon_flutter/features/post/cubit/post_create_state.dart';
+import 'package:catalansalmon_flutter/features/post/cubit/comment_cubit.dart';
+import 'package:catalansalmon_flutter/features/post/cubit/comment_state.dart';
 import 'package:catalansalmon_flutter/features/post/data/posts_repo.dart';
 import 'package:catalansalmon_flutter/features/post/model/post_comment.dart';
 import 'package:catalansalmon_flutter/widgets/cam_text_field.dart';
@@ -31,19 +31,19 @@ class _PostCreateWidgetState extends State<PostCreateWidget> {
       create: (context) {
         final repo = PostsRepository();
         final authRepo = context.read<AuthRepository>();
-        return PostCreateCubit(authRepo, repo, widget.communityId, widget.postId);
+        return CommentCubit(authRepo, repo, widget.communityId, widget.postId);
       },
       child: SafeArea(
           child: Padding(
               padding: const EdgeInsets.all(16),
-              child: BlocConsumer<PostCreateCubit,PostCreateState>(
+              child: BlocConsumer<CommentCubit,CommentState>(
                 listener: ((context, state) {
-                  if (state is SuccessPostCreateState) {
+                  if (state is SuccessCommentState) {
                     widget.commentResultHandler?.call(state.comments);
                   }
                 }),
                 builder: (context, state) {
-                if (state is ErrorPostCreateState) {
+                if (state is ErrorCommentState) {
                   return SizedBox(
                       width: double.infinity,
                       height: 250,
@@ -85,13 +85,13 @@ class _PostCreateWidgetState extends State<PostCreateWidget> {
                         ],
                       )));
                 }
-                if (state is SendingPostCreateState) {
+                if (state is SendingCommentState) {
                   return const SizedBox(
                       width: double.infinity,
                       height: 250,
                       child: Center(child: GlobeLogo()));
                 }
-                if (state is SuccessPostCreateState) {
+                if (state is SuccessCommentState) {
                   return SizedBox(
                       width: double.infinity,
                       height: 250,
@@ -150,7 +150,7 @@ class _PostCreateWidgetState extends State<PostCreateWidget> {
                                 if (_commentTextController.text.isEmpty) {
                                   return;
                                 }
-                                context.read<PostCreateCubit>().createComment(_commentTextController.text);
+                                context.read<CommentCubit>().createComment(_commentTextController.text);
                               },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.black,

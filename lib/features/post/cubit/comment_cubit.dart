@@ -1,9 +1,9 @@
 import 'package:catalansalmon_flutter/features/auth/data/auth_repository.dart';
-import 'package:catalansalmon_flutter/features/post/cubit/post_create_state.dart';
+import 'package:catalansalmon_flutter/features/post/cubit/comment_state.dart';
 import 'package:catalansalmon_flutter/features/post/data/posts_repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PostCreateCubit extends Cubit<PostCreateState> {
+class CommentCubit extends Cubit<CommentState> {
 
   final PostsRepository _repo;
   final AuthRepository _authRepository;
@@ -11,19 +11,19 @@ class PostCreateCubit extends Cubit<PostCreateState> {
   final String communityId;
   final String postId;
 
-  PostCreateCubit(this._authRepository, this._repo, this.communityId, this.postId) : super(InitPostCreateState());
+  CommentCubit(this._authRepository, this._repo, this.communityId, this.postId) : super(InitCommentState());
 
   Future<void> createComment(String comment) async {
-    emit(SendingPostCreateState());
+    emit(SendingCommentState());
     try {
       if (_authRepository.token == null) {
         throw Exception('Not authenticated');
       }
       final comments = await _repo.createComment(_authRepository.token!, communityId, postId, comment);
-      emit(SuccessPostCreateState(
+      emit(SuccessCommentState(
           comments: comments));
     } catch (error) {
-      emit(ErrorPostCreateState(message: error.toString()));
+      emit(ErrorCommentState(message: error.toString()));
     }
   }
 }

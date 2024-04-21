@@ -4,7 +4,7 @@ import 'package:catalansalmon_flutter/features/auth/presentation/login_page.dart
 import 'package:catalansalmon_flutter/features/community/model/community_post.dart';
 import 'package:catalansalmon_flutter/features/post/cubit/post_cubit.dart';
 import 'package:catalansalmon_flutter/features/post/cubit/post_state.dart';
-import 'package:catalansalmon_flutter/features/post/presentation/post_create_widget.dart';
+import 'package:catalansalmon_flutter/features/post/presentation/comment_widget.dart';
 import 'package:catalansalmon_flutter/model/community.dart';
 import 'package:catalansalmon_flutter/widgets/cta_button.dart';
 import 'package:catalansalmon_flutter/widgets/globe_logo.dart';
