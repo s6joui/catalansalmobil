@@ -208,7 +208,8 @@ class _PostCommentsWidget extends StatelessWidget {
                                 offset: const Offset(1, 1),
                                 blurRadius: 3.0)
                           ],
-                          color: Colors.white),
+                          color:
+                              Theme.of(context).colorScheme.primaryContainer),
                       child: Container(
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
