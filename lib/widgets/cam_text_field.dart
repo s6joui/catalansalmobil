@@ -62,6 +62,7 @@ class _CAMTextFieldState extends State<CAMTextField> {
           contentPadding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
           border: const OutlineInputBorder(),
           hintText: widget.hintText,
+          hintStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
           suffixIcon: _buildSuffixIcon()),
     );
   }

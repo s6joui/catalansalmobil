@@ -9,18 +9,17 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreatePostWidget extends StatefulWidget {
-  const CreatePostWidget({super.key, this.postResultHandler, required this.communityId});
+  const CreatePostWidget(
+      {super.key, this.postResultHandler, required this.communityId});
 
   final String communityId;
   final void Function()? postResultHandler;
 
   @override
-  State<CreatePostWidget> createState() =>
-      _CreatePostWidgetState();
+  State<CreatePostWidget> createState() => _CreatePostWidgetState();
 }
 
-class _CreatePostWidgetState
-    extends State<CreatePostWidget> {
+class _CreatePostWidgetState extends State<CreatePostWidget> {
   final _titleTextController = TextEditingController();
   final _bodyTextController = TextEditingController();
 
@@ -35,13 +34,12 @@ class _CreatePostWidgetState
       child: SafeArea(
           child: Padding(
               padding: const EdgeInsets.all(16),
-              child: BlocConsumer<CreatePostCubit,CreatePostState>(
-                listener: ((context, state) {
-                  if (state is SuccessCreatePostState) {
-                    widget.postResultHandler?.call();
-                  }
-                }),
-                builder: (context, state) {
+              child: BlocConsumer<CreatePostCubit, CreatePostState>(
+                  listener: ((context, state) {
+                if (state is SuccessCreatePostState) {
+                  widget.postResultHandler?.call();
+                }
+              }), builder: (context, state) {
                 if (state is ErrorCreatePostState) {
                   return SizedBox(
                       width: double.infinity,
@@ -62,8 +60,7 @@ class _CreatePostWidgetState
                               .animate()
                               .scale(),
                           const SizedBox(height: 16),
-                          const Text(
-                                  'Hi ha hagut un error. Prova-ho de nou.',
+                          const Text('Hi ha hagut un error. Prova-ho de nou.',
                                   textAlign: TextAlign.center)
                               .animate()
                               .fadeIn(),
@@ -76,8 +73,12 @@ class _CreatePostWidgetState
                                         Navigator.of(context).pop();
                                       },
                                       style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.black,
-                                          foregroundColor: Colors.white),
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          foregroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary),
                                       child: const Text('Torna-ho a provar')))
                               .animate()
                               .fadeIn(),
@@ -99,17 +100,23 @@ class _CreatePostWidgetState
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(width: 3),
-                                  ),
-                                  child: const Icon(Icons.check, size: 40))
-                              .animate()
-                              .scale(),
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(width: 3),
+                              ),
+                              child: Icon(
+                                Icons.check,
+                                size: 40,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
+                              )).animate().scale(),
                           const SizedBox(height: 16),
-                          const Text('El comentari s\'ha enviat correctament!').animate().fadeIn(),
+                          const Text('El post s\'ha enviat correctament!')
+                              .animate()
+                              .fadeIn(),
                           const SizedBox(height: 48),
                           SizedBox(
                                   width: double.infinity,
@@ -119,51 +126,57 @@ class _CreatePostWidgetState
                                         Navigator.of(context).pop();
                                       },
                                       style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.black,
-                                          foregroundColor: Colors.white),
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          foregroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary),
                                       child: const Text('Continua')))
                               .animate()
                               .fadeIn(),
                         ],
                       )));
                 }
-                  return SingleChildScrollView(
+                return SingleChildScrollView(
                     child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                  const SizedBox(height: 16),
-                  const Text('Escriu el teu post:'),
-                  const SizedBox(height: 16),
-                  CAMTextField(
-                    hintText: 'Títol',
-                    autofocus: true,
-                    controller: _titleTextController,
-                  ),
-                  const SizedBox(height: 8),
-                  CAMTextField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 5,
-                      hintText: 'Contingut',
-                      textInputAction: TextInputAction.newline,
-                      showsClearButton: false,
-                      controller: _bodyTextController),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                      width: double.infinity,
-                      height: 44,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            context.read<CreatePostCubit>().createPost(_titleTextController.text, _bodyTextController.text);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white),
-                          child: const Text('Envia'))),
-                ])
-                );
-              })
-          )),
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                      const SizedBox(height: 16),
+                      const Text('Escriu el teu post:'),
+                      const SizedBox(height: 16),
+                      CAMTextField(
+                        hintText: 'Títol',
+                        autofocus: true,
+                        controller: _titleTextController,
+                      ),
+                      const SizedBox(height: 8),
+                      CAMTextField(
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 5,
+                          hintText: 'Contingut',
+                          textInputAction: TextInputAction.newline,
+                          showsClearButton: false,
+                          controller: _bodyTextController),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                          width: double.infinity,
+                          height: 44,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                context.read<CreatePostCubit>().createPost(
+                                    _titleTextController.text,
+                                    _bodyTextController.text);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  foregroundColor:
+                                      Theme.of(context).colorScheme.onPrimary),
+                              child: const Text('Envia'))),
+                    ]));
+              }))),
     );
   }
 }

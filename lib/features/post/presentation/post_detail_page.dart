@@ -106,6 +106,9 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                 showModalBottomSheet(
                                     context: context,
                                     isScrollControlled: true,
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
                                     builder: (innerContext) {
                                       return Padding(
                                         padding: EdgeInsets.only(
@@ -130,6 +133,9 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                 showModalBottomSheet(
                                     context: context,
                                     isScrollControlled: true,
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .primaryContainer,
                                     builder: (innerContext) {
                                       return Padding(
                                         padding: EdgeInsets.only(

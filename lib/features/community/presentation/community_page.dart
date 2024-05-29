@@ -187,6 +187,9 @@ class _CommunityBody extends StatelessWidget {
                               showModalBottomSheet(
                                   context: context,
                                   isScrollControlled: true,
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer,
                                   builder: (innerContext) {
                                     return Padding(
                                       padding: EdgeInsets.only(
@@ -238,6 +241,9 @@ class _CommunityBody extends StatelessWidget {
                               showModalBottomSheet(
                                   context: context,
                                   isScrollControlled: true,
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer,
                                   builder: (innerContext) {
                                     return Padding(
                                       padding: EdgeInsets.only(
@@ -353,7 +359,10 @@ class _CommunityPostWidget extends StatelessWidget {
             gradient: LinearGradient(
                 end: const Alignment(0, 2),
                 begin: const Alignment(0, -12),
-                colors: [community.color, Colors.white])),
+                colors: [
+                  community.color,
+                  Theme.of(context).colorScheme.primaryContainer
+                ])),
         child: InkWell(
           splashColor: community.color.withAlpha(40),
           borderRadius: BorderRadius.circular(8),
@@ -495,8 +504,8 @@ class _CommunityInfoSection extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                color: Theme.of(context).colorScheme.primaryContainer,
                 boxShadow: [
                   BoxShadow(
                       color: Colors.black.withOpacity(0.15),
@@ -507,8 +516,8 @@ class _CommunityInfoSection extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24)),
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16)),
                   child: CachedNetworkImage(
                     height: 170,
                     width: double.infinity,
