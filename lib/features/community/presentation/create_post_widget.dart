@@ -3,6 +3,7 @@ import 'package:catalansalmon_flutter/features/auth/data/auth_repository.dart';
 import 'package:catalansalmon_flutter/features/community/cubit/create_post_cubit.dart';
 import 'package:catalansalmon_flutter/features/community/cubit/create_post_state.dart';
 import 'package:catalansalmon_flutter/widgets/cam_text_field.dart';
+import 'package:catalansalmon_flutter/widgets/encircled_icon.dart';
 import 'package:catalansalmon_flutter/widgets/globe_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -48,15 +49,7 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                           child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(width: 3),
-                                  ),
-                                  child:
-                                      const Icon(Icons.priority_high, size: 40))
+                          const EncircledIcon(icon: Icons.priority_high)
                               .animate()
                               .scale(),
                           const SizedBox(height: 16),
@@ -99,20 +92,9 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                           child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(width: 3),
-                              ),
-                              child: Icon(
-                                Icons.check,
-                                size: 40,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onPrimaryContainer,
-                              )).animate().scale(),
+                          const EncircledIcon(icon: Icons.check)
+                              .animate()
+                              .scale(),
                           const SizedBox(height: 16),
                           const Text('El post s\'ha enviat correctament!')
                               .animate()
