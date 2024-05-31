@@ -4,12 +4,14 @@ class CommunityMember {
   final String id;
   final String name;
   final String img;
-  
+
   CommunityMember({
     required this.id,
     required this.name,
     required this.img,
   });
+
+  String get shortName => name.split(' ').first;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -29,5 +31,6 @@ class CommunityMember {
 
   String toJson() => json.encode(toMap());
 
-  factory CommunityMember.fromJson(String source) => CommunityMember.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CommunityMember.fromJson(String source) =>
+      CommunityMember.fromMap(json.decode(source) as Map<String, dynamic>);
 }
