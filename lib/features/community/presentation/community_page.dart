@@ -10,6 +10,7 @@ import 'package:catalansalmon_flutter/features/community/model/community_post.da
 import 'package:catalansalmon_flutter/features/community/presentation/create_post_widget.dart';
 import 'package:catalansalmon_flutter/features/community/presentation/member_avatar.dart';
 import 'package:catalansalmon_flutter/features/intro/presentation/intro_page.dart';
+import 'package:catalansalmon_flutter/features/member-list/presentation/member_list_page.dart';
 import 'package:catalansalmon_flutter/features/post/presentation/post_detail_page.dart';
 import 'package:catalansalmon_flutter/secrets.dart';
 import 'package:catalansalmon_flutter/model/community.dart';
@@ -23,7 +24,8 @@ class CommunityPage extends StatefulWidget {
   const CommunityPage({super.key, required this.community, this.details});
 
   factory CommunityPage.fromDetails(CommunityDetails details) {
-    return CommunityPage(community: Community.fromCommunityDetails(details), details: details);
+    return CommunityPage(
+        community: Community.fromCommunityDetails(details), details: details);
   }
 
   final Community community;
@@ -69,15 +71,17 @@ class _CommunityPageState extends State<CommunityPage> {
             const SizedBox(width: 8),
             Text(widget.community.nom)
           ]),
-          leading: IconButton(onPressed: () {
-            if(Navigator.of(context).canPop()) {
-              Navigator.of(context).pop();
-            } else {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const IntroPage(shouldAttemptLogin: false))
-              );
-            }
-          },icon: Icon(Icons.adaptive.arrow_back_rounded)),
+          leading: IconButton(
+              onPressed: () {
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                } else {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) =>
+                          const IntroPage(shouldAttemptLogin: false)));
+                }
+              },
+              icon: Icon(Icons.adaptive.arrow_back_rounded)),
           actions: [
             BlocBuilder<CommunityCubit, CommunityState>(
                 builder: (context, state) {
@@ -158,7 +162,8 @@ class _CommunityBody extends StatelessWidget {
                   members: members,
                   memberCount: details.numUsuaris,
                   color: details.color,
-                  textColor: textColor),
+                  textColor: textColor,
+                  communityId: details.id),
               CommunityPostsSection(posts: posts, community: community),
               _CommunityInfoSection(details: details),
               SizedBox(height: MediaQuery.of(context).padding.bottom + 88),
@@ -188,9 +193,15 @@ class _CommunityBody extends StatelessWidget {
                                           bottom: MediaQuery.of(innerContext)
                                               .viewInsets
                                               .bottom),
-                                      child: CreatePostWidget(communityId: community.id, postResultHandler: () {
-                                        context.read<CommunityCubit>().fetchContent(null, bypassCache: true);
-                                      },),
+                                      child: CreatePostWidget(
+                                        communityId: community.id,
+                                        postResultHandler: () {
+                                          context
+                                              .read<CommunityCubit>()
+                                              .fetchContent(null,
+                                                  bypassCache: true);
+                                        },
+                                      ),
                                     );
                                   });
                             },
@@ -373,8 +384,10 @@ class _CommunityMembersSection extends StatelessWidget {
       {required this.members,
       required this.color,
       required this.memberCount,
-      required this.textColor});
+      required this.textColor,
+      required this.communityId});
 
+  final String communityId;
   final List<CommunityMember> members;
   final int memberCount;
   final Color color;
@@ -397,14 +410,39 @@ class _CommunityMembersSection extends StatelessWidget {
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-            itemCount: members.length,
+            itemCount: members.length + 1,
             itemBuilder: (context, index) {
+              if (index == members.length) {
+                return InkWell(
+                  splashFactory: NoSplash.splashFactory,
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return MemberListPage(
+                            communityId: communityId, communityColor: color);
+                      },
+                    ));
+                  },
+                  child: Column(
+                    children: [
+                      MemberAvatar(
+                        color: Theme.of(context).colorScheme.secondary,
+                        name: '+',
+                        foregroundColor: textColor,
+                      ),
+                      const SizedBox(height: 4),
+                      const SizedBox(
+                          width: 80,
+                          child: Text('Veure tots',
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis))
+                    ],
+                  ),
+                );
+              }
               final member = members[index];
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 2, 8),
-                child: _CommunityMemberWidget(
-                    member: member, color: color, textColor: textColor),
-              );
+              return _CommunityMemberWidget(
+                  member: member, color: color, textColor: textColor);
             },
           ),
         )
@@ -433,7 +471,7 @@ class _CommunityMemberWidget extends StatelessWidget {
         const SizedBox(height: 4),
         SizedBox(
             width: 80,
-            child: Text(member.name.split(' ').first,
+            child: Text(member.shortName,
                 textAlign: TextAlign.center, overflow: TextOverflow.ellipsis))
       ],
     );
@@ -555,24 +593,20 @@ class _CommunityPageSkeletonState extends State<_CommunityPageSkeleton>
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                   itemCount: 5,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 2, 8),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 70,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                    color: Colors.white.withAlpha(90),
-                                    width: 8),
-                                color: color.withOpacity(0.1)),
-                            child: const SizedBox(),
-                          ),
-                          const SizedBox(height: 4),
-                        ],
-                      ),
+                    return Column(
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 70,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: Colors.white.withAlpha(90), width: 8),
+                              color: color.withOpacity(0.1)),
+                          child: const SizedBox(),
+                        ),
+                        const SizedBox(height: 4),
+                      ],
                     );
                   },
                 ).shimmerLoop(),
@@ -618,7 +652,9 @@ class _CommunityPageSkeletonState extends State<_CommunityPageSkeleton>
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(24),
+                        topRight: Radius.circular(24)),
                     color: color.withOpacity(0.1)),
               ).shimmerLoop(),
             ),

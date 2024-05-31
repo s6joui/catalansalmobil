@@ -5,15 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  
   //Setting SysemUIOverlay
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       systemStatusBarContrastEnforced: true,
       statusBarColor: Colors.white,
       systemNavigationBarColor: Colors.white,
       systemNavigationBarIconBrightness: Brightness.dark,
-      statusBarIconBrightness: Brightness.dark)
-  );
+      statusBarIconBrightness: Brightness.dark));
   runApp(const MyApp());
 }
 
@@ -34,8 +32,8 @@ class MyApp extends StatelessWidget {
               brightness: Brightness.light,
               primary: Colors.black,
               onPrimary: Colors.white,
-              secondary: Colors.white,
-              onSecondary: Colors.black,
+              secondary: Color(0xFFA7A7A7),
+              onSecondary: Colors.white,
               error: Colors.red,
               onError: Colors.white,
               background: Colors.white,

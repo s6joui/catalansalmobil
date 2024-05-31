@@ -5,7 +5,7 @@ class MemberAvatar extends StatelessWidget {
       {super.key,
       required this.color,
       required this.name,
-      required this.foregroundColor});
+      this.foregroundColor = Colors.white});
 
   final Color color;
   final String name;
