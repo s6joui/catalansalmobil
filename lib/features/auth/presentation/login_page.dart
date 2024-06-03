@@ -3,6 +3,7 @@ import 'package:catalansalmon_flutter/features/auth/cubit/auth_state.dart';
 import 'package:catalansalmon_flutter/features/auth/data/auth_repository.dart';
 import 'package:catalansalmon_flutter/widgets/cam_logo.dart';
 import 'package:catalansalmon_flutter/widgets/cam_text_field.dart';
+import 'package:catalansalmon_flutter/widgets/encircled_icon.dart';
 import 'package:catalansalmon_flutter/widgets/globe_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -10,7 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key, required this.communityId, this.loginResultHandler});
+  const LoginPage(
+      {super.key, required this.communityId, this.loginResultHandler});
 
   final String communityId;
   final void Function(bool)? loginResultHandler;
@@ -48,15 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(width: 3),
-                                  ),
-                                  child:
-                                      const Icon(Icons.priority_high, size: 40))
+                          const EncircledIcon(icon: Icons.priority_high)
                               .animate()
                               .scale(),
                           const SizedBox(height: 16),
@@ -74,8 +68,12 @@ class _LoginPageState extends State<LoginPage> {
                                         context.read<AuthCubit>().retryLogin();
                                       },
                                       style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.black,
-                                          foregroundColor: Colors.white),
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          foregroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary),
                                       child: const Text('Torna-ho a provar')))
                               .animate()
                               .fadeIn(),
@@ -96,14 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(width: 3),
-                                  ),
-                                  child: const Icon(Icons.check, size: 40))
+                          const EncircledIcon(icon: Icons.check)
                               .animate()
                               .scale(),
                           const SizedBox(height: 16),
@@ -117,8 +108,12 @@ class _LoginPageState extends State<LoginPage> {
                                         Navigator.of(context).pop();
                                       },
                                       style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.black,
-                                          foregroundColor: Colors.white),
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          foregroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary),
                                       child: const Text('Continua')))
                               .animate()
                               .fadeIn(),
@@ -169,8 +164,10 @@ class _LoginPageState extends State<LoginPage> {
                                     widget.communityId);
                               },
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.black,
-                                  foregroundColor: Colors.white),
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  foregroundColor:
+                                      Theme.of(context).colorScheme.onPrimary),
                               child: const Text('Entra'))),
                       const SizedBox(height: 16),
                       SizedBox(
@@ -184,12 +181,21 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(22)),
-                              child: const Row(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text('Encara no ets usuari? Registra\'t!'),
-                                  SizedBox(width: 16),
-                                  Icon(Icons.arrow_forward)
+                                  Text(
+                                    'Encara no ets usuari? Registra\'t!',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimaryContainer),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Icon(Icons.arrow_forward,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onPrimaryContainer)
                                 ],
                               )))
                     ],

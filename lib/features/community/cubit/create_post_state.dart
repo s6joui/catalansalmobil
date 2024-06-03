@@ -1,5 +1,3 @@
-import 'package:catalansalmon_flutter/features/community/model/community_post.dart';
-
 abstract class CreatePostState {}
 
 class InitCreatePostState extends CreatePostState {}
