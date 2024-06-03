@@ -10,7 +10,8 @@ Aplicació mòbil per a la plataforma catalansalmon.com.
 - ✅ Tauler de comunitat
 - ✅ Enviar comentaris
 - ✅ Crear posts al tauler
-- ❌ Llistat usuaris
+- ✅ Llistat usuaris
+- ✅ Mode fosc
 
 Les funcions marcades amb una creu s'aniran implementant de mica en mica.
 
