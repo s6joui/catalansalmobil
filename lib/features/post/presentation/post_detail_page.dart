@@ -11,6 +11,8 @@ import 'package:catalansalmon_flutter/widgets/globe_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PostDetailPage extends StatefulWidget {
   const PostDetailPage(
@@ -61,7 +63,18 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                 color: widget.community.color,
                                 fontWeight: FontWeight.bold)),
                         const SizedBox(height: 16),
-                        Text(widget.post.body),
+                        Linkify(
+                          options: const LinkifyOptions(humanize: false),
+                          text: widget.post.body,
+                          onOpen: (link) async {
+                            if (!await launchUrl(Uri.parse(link.url))) {
+                              throw Exception('Could not launch ${link.url}');
+                            }
+                          },
+                          linkStyle: TextStyle(
+                              color: widget.community.color,
+                              fontWeight: FontWeight.normal),
+                        ),
                         const SizedBox(height: 16),
                         Text(
                           widget.post.user,
@@ -103,8 +116,12 @@ class _PostDetailPageState extends State<PostDetailPage> {
                                           communityId: widget.community.id,
                                           postId: widget.post.id,
                                           commentResultHandler: (comments) {
-                                            if (comments == null) { return; }
-                                            context.read<PostCubit>().updateCommentList(comments);
+                                            if (comments == null) {
+                                              return;
+                                            }
+                                            context
+                                                .read<PostCubit>()
+                                                .updateCommentList(comments);
                                           },
                                         ),
                                       );
