@@ -1,5 +1,6 @@
 import 'package:catalansalmon_flutter/features/auth/data/auth_repository.dart';
 import 'package:catalansalmon_flutter/features/intro/presentation/intro_page.dart';
+import 'package:catalansalmon_flutter/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           darkTheme: ThemeData(
             useMaterial3: true,
+            textTheme: textTheme,
             colorScheme: const ColorScheme(
                 brightness: Brightness.light,
                 primary: Colors.white,
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
           ),
           theme: ThemeData(
             useMaterial3: true,
+            textTheme: textTheme,
             colorScheme: const ColorScheme(
                 brightness: Brightness.light,
                 primary: Colors.black,
