@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
             textTheme: textTheme,
             colorScheme: const ColorScheme(
-                brightness: Brightness.light,
+                brightness: Brightness.dark,
                 primary: Colors.white,
                 onPrimary: Colors.black,
                 secondary: Color(0x88FFFFFF),

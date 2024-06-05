@@ -51,7 +51,7 @@ class _CommunityPageState extends State<CommunityPage> {
     super.didChangeDependencies();
 
     precacheImage(
-        CachedNetworkImageProvider(widget.community.mapUrl()), context);
+        CachedNetworkImageProvider(widget.community.mapUrl(context)), context);
   }
 
   @override
@@ -165,7 +165,8 @@ class _CommunityBody extends StatelessWidget {
                   textColor: textColor,
                   communityId: details.id),
               CommunityPostsSection(posts: posts, community: community),
-              _CommunityInfoSection(details: details),
+              _CommunityInfoSection(
+                  details: details, mapUrl: community.mapUrl(context)),
               SizedBox(height: MediaQuery.of(context).padding.bottom + 88),
             ],
           ),
@@ -287,18 +288,6 @@ class _CommunityBody extends StatelessWidget {
         )
       ],
     );
-  }
-}
-
-extension CommunityExtension on Community {
-  String mapUrl() {
-    return "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/$lng,$lat,10/400x200?access_token=$mapBoxApiKey";
-  }
-}
-
-extension CommunityDetailsExtension on CommunityDetails {
-  String mapUrl() {
-    return "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/$lng,$lat,10/400x200?access_token=$mapBoxApiKey";
   }
 }
 
@@ -488,9 +477,10 @@ class _CommunityMemberWidget extends StatelessWidget {
 }
 
 class _CommunityInfoSection extends StatelessWidget {
-  const _CommunityInfoSection({required this.details});
+  const _CommunityInfoSection({required this.details, required this.mapUrl});
 
   final CommunityDetails details;
+  final String mapUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -505,13 +495,19 @@ class _CommunityInfoSection extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                color: Theme.of(context).colorScheme.primaryContainer,
                 boxShadow: [
                   BoxShadow(
                       color: Colors.black.withOpacity(0.15),
                       offset: const Offset(0, 5),
                       blurRadius: 8)
-                ]),
+                ],
+                gradient: LinearGradient(
+                    begin: const Alignment(0, -6),
+                    end: const Alignment(0, 1.1),
+                    colors: [
+                      details.color,
+                      Theme.of(context).colorScheme.primaryContainer
+                    ])),
             child: Column(
               children: [
                 ClipRRect(
@@ -519,12 +515,17 @@ class _CommunityInfoSection extends StatelessWidget {
                       topLeft: Radius.circular(16),
                       topRight: Radius.circular(16)),
                   child: CachedNetworkImage(
-                    height: 170,
+                    height: 180,
                     width: double.infinity,
                     fadeInDuration: 200.ms,
                     fadeOutDuration: 200.ms,
+                    color: details.color.withOpacity(0.4),
+                    colorBlendMode:
+                        Theme.of(context).brightness == Brightness.dark
+                            ? BlendMode.overlay
+                            : BlendMode.dst,
                     fit: BoxFit.cover,
-                    imageUrl: details.mapUrl(),
+                    imageUrl: mapUrl,
                     placeholder: (context, url) => Container(
                         color: Colors.white,
                         child:
@@ -582,6 +583,12 @@ class _CommunityPageSkeletonState extends State<_CommunityPageSkeleton>
     return widget.community.color;
   }
 
+  Color get borderColor {
+    return Theme.of(context).brightness == Brightness.dark
+        ? Colors.white.withAlpha(10)
+        : Colors.white.withAlpha(90);
+  }
+
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
@@ -609,8 +616,7 @@ class _CommunityPageSkeletonState extends State<_CommunityPageSkeleton>
                           height: 70,
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(
-                                  color: Colors.white.withAlpha(90), width: 8),
+                              border: Border.all(color: borderColor, width: 8),
                               color: color.withOpacity(0.1)),
                           child: const SizedBox(),
                         ),
@@ -695,5 +701,14 @@ class _SectionTitle extends StatelessWidget {
             : const SizedBox()
       ],
     );
+  }
+}
+
+extension CommunityExtension on Community {
+  String mapUrl(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      return "https://api.mapbox.com/styles/v1/mapbox/dark-v11/static/$lng,$lat,10/400x200?access_token=$mapBoxApiKey";
+    }
+    return "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/$lng,$lat,10/400x200?access_token=$mapBoxApiKey";
   }
 }

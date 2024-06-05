@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:catalansalmon_flutter/features/community/model/community_details.dart';
 import 'package:catalansalmon_flutter/utils/color_utils.dart';
 import 'package:catalansalmon_flutter/utils/string_extension.dart';
+import 'package:flutter/material.dart';
 
 class Community {
   final String id;
@@ -25,13 +26,12 @@ class Community {
 
   factory Community.fromCommunityDetails(CommunityDetails details) {
     return Community(
-      id: details.id,
-      nom: details.nom, 
-      color: details.color, 
-      numUsuaris: details.numUsuaris,
-      lat: details.lat,
-      lng: details.lng
-    );
+        id: details.id,
+        nom: details.nom,
+        color: details.color,
+        numUsuaris: details.numUsuaris,
+        lat: details.lat,
+        lng: details.lng);
   }
 
   factory Community.fromMap(Map<String, dynamic> map) {
