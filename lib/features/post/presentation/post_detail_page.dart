@@ -59,10 +59,8 @@ class _PostDetailPageState extends State<PostDetailPage> {
                         Text(widget.post.title,
                             style: Theme.of(context)
                                 .textTheme
-                                .titleLarge
-                                ?.apply(
-                                    fontWeightDelta: 2,
-                                    letterSpacingDelta: -0.7)),
+                                .headlineSmall
+                                ?.copyWith(fontWeight: FontWeight.w900)),
                         const SizedBox(height: 8),
                         Text(widget.post.date,
                             style: TextStyle(
@@ -108,7 +106,7 @@ class _PostDetailPageState extends State<PostDetailPage> {
                           return CtaButton(
                             title: 'Comenta',
                             color: widget.community.color,
-                            foregroundColor: Colors.white,
+                            foregroundColor: widget.community.onTopColor,
                             icon: Icons.message_outlined,
                             onPressed: () {
                               if (state.isLoggedIn) {
@@ -195,7 +193,7 @@ class _PostCommentsWidget extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .titleLarge
-                ?.apply(fontWeightDelta: 2, letterSpacingDelta: -0.7)),
+                ?.copyWith(fontWeight: FontWeight.w900)),
         const SizedBox(height: 8),
         BlocBuilder<PostCubit, PostState>(builder: (context, state) {
           if (state is ResponsePostState) {

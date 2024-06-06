@@ -8,10 +8,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MemberListPage extends StatefulWidget {
   const MemberListPage(
-      {super.key, required this.communityId, required this.communityColor});
+      {super.key,
+      required this.communityId,
+      required this.communityColor,
+      required this.foregroundColor});
 
   final String communityId;
   final Color communityColor;
+  final Color foregroundColor;
 
   @override
   State<MemberListPage> createState() => _MemberListPageState();
@@ -43,7 +47,9 @@ class _MemberListPageState extends State<MemberListPage> {
                       return ListTile(
                         contentPadding: const EdgeInsets.fromLTRB(8, 0, 16, 0),
                         leading: MemberAvatar(
-                            color: widget.communityColor, name: member.name),
+                            color: widget.communityColor,
+                            name: member.name,
+                            foregroundColor: widget.foregroundColor),
                         title: Text(member.name),
                       );
                     }).animate().fadeIn();

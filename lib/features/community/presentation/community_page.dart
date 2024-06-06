@@ -379,7 +379,9 @@ class _CommunityMembersSection extends StatelessWidget {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) {
                         return MemberListPage(
-                            communityId: communityId, communityColor: color);
+                            communityId: communityId,
+                            communityColor: color,
+                            foregroundColor: textColor);
                       },
                     ));
                   },
@@ -389,6 +391,11 @@ class _CommunityMembersSection extends StatelessWidget {
                         color: Theme.of(context).colorScheme.secondary,
                         name: '+',
                         foregroundColor: textColor,
+                        textStyle: const TextStyle(
+                            letterSpacing: 1,
+                            fontSize: 30,
+                            height: -0.3,
+                            fontWeight: FontWeight.w300),
                       ),
                       const SizedBox(height: 4),
                       const SizedBox(
@@ -630,8 +637,8 @@ class _CommunityPageSkeletonState extends State<_CommunityPageSkeleton>
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(24),
-                        topRight: Radius.circular(24)),
+                        topLeft: Radius.circular(16),
+                        topRight: Radius.circular(16)),
                     color: color.withOpacity(0.1)),
               ).shimmerLoop(),
             ),

@@ -5,11 +5,17 @@ class MemberAvatar extends StatelessWidget {
       {super.key,
       required this.color,
       required this.name,
-      this.foregroundColor = Colors.white});
+      required this.foregroundColor,
+      this.textStyle = const TextStyle(
+          letterSpacing: 1,
+          fontSize: 30,
+          height: -0.1,
+          fontWeight: FontWeight.bold)});
 
   final Color color;
   final String name;
   final Color foregroundColor;
+  final TextStyle textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +34,9 @@ class MemberAvatar extends StatelessWidget {
           color: color),
       child: Center(
           child: Text(
-        name.characters.first,
+        name.characters.first.toUpperCase(),
         textAlign: TextAlign.center,
-        style: TextStyle(
-            letterSpacing: -1.0,
-            fontSize: 30,
-            color: foregroundColor,
-            fontWeight: FontWeight.bold),
+        style: textStyle.copyWith(color: foregroundColor),
       )),
     );
   }

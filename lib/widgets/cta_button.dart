@@ -37,7 +37,6 @@ class CtaButton extends StatelessWidget {
               style: TextStyle(
                   color: foregroundColor,
                   fontSize: 16,
-                  letterSpacing: -0.5,
                   fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),

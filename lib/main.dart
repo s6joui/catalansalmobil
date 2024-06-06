@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       create: (context) => AuthRepository(),
       lazy: false,
       child: MaterialApp(
-          title: 'Flutter Demo',
+          title: 'Catalansalmon.com',
           darkTheme: ThemeData(
             useMaterial3: true,
             textTheme: textTheme,
@@ -35,6 +35,13 @@ class MyApp extends StatelessWidget {
                 onSurface: Colors.white,
                 primaryContainer: Color(0xFF222222),
                 onPrimaryContainer: Colors.white),
+            pageTransitionsTheme: const PageTransitionsTheme(
+              builders: <TargetPlatform, PageTransitionsBuilder>{
+                TargetPlatform.android: ZoomPageTransitionsBuilder(
+                  allowEnterRouteSnapshotting: false,
+                ),
+              },
+            ),
           ),
           theme: ThemeData(
             useMaterial3: true,
@@ -52,6 +59,13 @@ class MyApp extends StatelessWidget {
                 onSurface: Colors.black,
                 primaryContainer: Colors.white,
                 onPrimaryContainer: Colors.black),
+            pageTransitionsTheme: const PageTransitionsTheme(
+              builders: <TargetPlatform, PageTransitionsBuilder>{
+                TargetPlatform.android: ZoomPageTransitionsBuilder(
+                  allowEnterRouteSnapshotting: false,
+                ),
+              },
+            ),
           ),
           home: const IntroPage(shouldAttemptLogin: true)),
     );

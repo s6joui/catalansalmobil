@@ -14,12 +14,21 @@ const textTheme = TextTheme(
       fontWeight: FontWeight.w700,
     ),
     bodyMedium: TextStyle(
-      fontFamily: 'Plus Jakarta Sans',
-      fontWeight: FontWeight.w500,
-    ),
-    titleLarge:
-        TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w900),
+        fontFamily: 'Plus Jakarta Sans',
+        fontWeight: FontWeight.w500,
+        letterSpacing: -0.3),
+    titleLarge: TextStyle(
+        fontFamily: 'Plus Jakarta Sans',
+        fontWeight: FontWeight.w900,
+        letterSpacing: -0.3),
+    headlineSmall: TextStyle(
+        fontFamily: 'Plus Jakarta Sans',
+        fontWeight: FontWeight.w900,
+        height: 0,
+        letterSpacing: -0.3,
+        fontSize: 22),
     headlineLarge: TextStyle(
       fontFamily: 'Plus Jakarta Sans',
       fontWeight: FontWeight.w900,
+      letterSpacing: -0.3,
     ));
