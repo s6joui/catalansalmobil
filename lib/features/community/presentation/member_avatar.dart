@@ -24,7 +24,7 @@ class MemberAvatar extends StatelessWidget {
                 offset: const Offset(1, 1),
                 blurRadius: 3.0)
           ],
-          border: Border.all(color: Colors.white.withAlpha(90), width: 8),
+          border: Border.all(color: foregroundColor.withAlpha(90), width: 8),
           color: color),
       child: Center(
           child: Text(

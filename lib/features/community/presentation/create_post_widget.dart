@@ -3,6 +3,7 @@ import 'package:catalansalmon_flutter/features/auth/data/auth_repository.dart';
 import 'package:catalansalmon_flutter/features/community/cubit/create_post_cubit.dart';
 import 'package:catalansalmon_flutter/features/community/cubit/create_post_state.dart';
 import 'package:catalansalmon_flutter/widgets/cam_text_field.dart';
+import 'package:catalansalmon_flutter/widgets/cta_button.dart';
 import 'package:catalansalmon_flutter/widgets/encircled_icon.dart';
 import 'package:catalansalmon_flutter/widgets/globe_logo.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +127,7 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                       const SizedBox(height: 16),
-                      const Text('Escriu el teu post:'),
+                      const Text('Escriu el teu missatge:'),
                       const SizedBox(height: 16),
                       CAMTextField(
                         hintText: 'Títol',
@@ -142,21 +143,22 @@ class _CreatePostWidgetState extends State<CreatePostWidget> {
                           showsClearButton: false,
                           controller: _bodyTextController),
                       const SizedBox(height: 16),
-                      SizedBox(
-                          width: double.infinity,
-                          height: 44,
-                          child: ElevatedButton(
+                      Row(
+                        children: [
+                          const Spacer(),
+                          CtaButton(
+                              title: 'Envia',
+                              color: Theme.of(context).colorScheme.primary,
+                              foregroundColor:
+                                  Theme.of(context).colorScheme.onPrimary,
+                              icon: Icons.arrow_forward,
                               onPressed: () {
                                 context.read<CreatePostCubit>().createPost(
                                     _titleTextController.text,
                                     _bodyTextController.text);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                  foregroundColor:
-                                      Theme.of(context).colorScheme.onPrimary),
-                              child: const Text('Envia'))),
+                              }),
+                        ],
+                      ),
                     ]));
               }))),
     );

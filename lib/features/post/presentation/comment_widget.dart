@@ -4,6 +4,7 @@ import 'package:catalansalmon_flutter/features/post/cubit/comment_cubit.dart';
 import 'package:catalansalmon_flutter/features/post/cubit/comment_state.dart';
 import 'package:catalansalmon_flutter/features/post/model/post_comment.dart';
 import 'package:catalansalmon_flutter/widgets/cam_text_field.dart';
+import 'package:catalansalmon_flutter/widgets/cta_button.dart';
 import 'package:catalansalmon_flutter/widgets/encircled_icon.dart';
 import 'package:catalansalmon_flutter/widgets/globe_logo.dart';
 import 'package:flutter/material.dart';
@@ -138,24 +139,26 @@ class _PostCreateWidgetState extends State<PostCreateWidget> {
                           maxLines: null,
                           controller: _commentTextController),
                       const SizedBox(height: 16),
-                      SizedBox(
-                          width: double.infinity,
-                          height: 44,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                if (_commentTextController.text.isEmpty) {
-                                  return;
-                                }
-                                context
-                                    .read<CommentCubit>()
-                                    .createComment(_commentTextController.text);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.primary,
-                                  foregroundColor:
-                                      Theme.of(context).colorScheme.onPrimary),
-                              child: const Text('Envia'))),
+                      Row(
+                        children: [
+                          const Spacer(),
+                          CtaButton(
+                            title: 'Envia',
+                            color: Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
+                            icon: Icons.arrow_forward,
+                            onPressed: () {
+                              if (_commentTextController.text.isEmpty) {
+                                return;
+                              }
+                              context
+                                  .read<CommentCubit>()
+                                  .createComment(_commentTextController.text);
+                            },
+                          ),
+                        ],
+                      ),
                     ]));
               }))),
     );

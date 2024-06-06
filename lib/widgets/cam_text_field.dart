@@ -60,7 +60,15 @@ class _CAMTextFieldState extends State<CAMTextField> {
       scrollPadding: widget.scrollPadding ?? const EdgeInsets.all(20),
       decoration: InputDecoration(
           contentPadding: const EdgeInsets.fromLTRB(12, 8, 8, 8),
-          border: const OutlineInputBorder(),
+          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.tertiary, width: 2)),
+          enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.tertiary, width: 2)),
+          border: OutlineInputBorder(
+              borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.tertiary, width: 2)),
           hintText: widget.hintText,
           hintStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
           suffixIcon: _buildSuffixIcon()),

@@ -26,6 +26,12 @@ class PostDetailPage extends StatefulWidget {
 }
 
 class _PostDetailPageState extends State<PostDetailPage> {
+  Color get labelColor {
+    return Theme.of(context).brightness == Brightness.dark
+        ? widget.community.lighterColor
+        : widget.community.color;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -60,27 +66,28 @@ class _PostDetailPageState extends State<PostDetailPage> {
                         const SizedBox(height: 8),
                         Text(widget.post.date,
                             style: TextStyle(
-                                color: widget.community.color,
-                                fontWeight: FontWeight.bold)),
+                                color: labelColor,
+                                fontWeight: FontWeight.w900)),
                         const SizedBox(height: 16),
                         Linkify(
-                          options: const LinkifyOptions(humanize: false),
-                          text: widget.post.body,
-                          onOpen: (link) async {
-                            if (!await launchUrl(Uri.parse(link.url))) {
-                              throw Exception('Could not launch ${link.url}');
-                            }
-                          },
-                          linkStyle: TextStyle(
-                              color: widget.community.color,
-                              fontWeight: FontWeight.normal),
-                        ),
+                            options: const LinkifyOptions(humanize: false),
+                            text: widget.post.body,
+                            onOpen: (link) async {
+                              if (!await launchUrl(Uri.parse(link.url))) {
+                                throw Exception('Could not launch ${link.url}');
+                              }
+                            },
+                            linkStyle: TextStyle(
+                                color: labelColor,
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline,
+                                decorationColor:
+                                    widget.community.lighterColor)),
                         const SizedBox(height: 16),
                         Text(
                           widget.post.user,
                           style: TextStyle(
-                              color: widget.community.color,
-                              fontWeight: FontWeight.bold),
+                              color: labelColor, fontWeight: FontWeight.w900),
                         ),
                         const SizedBox(height: 16),
                         _PostCommentsWidget(widget.community.color),
@@ -99,8 +106,10 @@ class _PostDetailPageState extends State<PostDetailPage> {
                             return const SizedBox();
                           }
                           return CtaButton(
-                            title: 'Comenta!',
+                            title: 'Comenta',
                             color: widget.community.color,
+                            foregroundColor: Colors.white,
+                            icon: Icons.message_outlined,
                             onPressed: () {
                               if (state.isLoggedIn) {
                                 showModalBottomSheet(

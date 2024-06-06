@@ -16,6 +16,7 @@ import 'package:catalansalmon_flutter/secrets.dart';
 import 'package:catalansalmon_flutter/model/community.dart';
 import 'package:catalansalmon_flutter/utils/widget_extensions.dart';
 import 'package:catalansalmon_flutter/widgets/color_dot.dart';
+import 'package:catalansalmon_flutter/widgets/cta_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,16 +37,6 @@ class CommunityPage extends StatefulWidget {
 }
 
 class _CommunityPageState extends State<CommunityPage> {
-  Color textColor = Colors.black;
-
-  @override
-  void initState() {
-    super.initState();
-    textColor = widget.community.color.computeLuminance() >= 0.67
-        ? Colors.black
-        : Colors.white;
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -116,7 +107,6 @@ class _CommunityPageState extends State<CommunityPage> {
                         details: state.details,
                         posts: state.posts,
                         members: state.details.membres,
-                        textColor: textColor,
                         isLoggedIn: state.isLoggedIn)
                     : const SizedBox(),
                 AnimatedOpacity(
@@ -139,15 +129,13 @@ class _CommunityBody extends StatelessWidget {
       required this.details,
       required this.posts,
       required this.members,
-      required this.isLoggedIn,
-      required this.textColor});
+      required this.isLoggedIn});
 
   final Community community;
   final CommunityDetails details;
   final List<CommunityPost> posts;
   final List<CommunityMember> members;
   final bool isLoggedIn;
-  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +150,7 @@ class _CommunityBody extends StatelessWidget {
                   members: members,
                   memberCount: details.numUsuaris,
                   color: details.color,
-                  textColor: textColor,
+                  textColor: community.onTopColor,
                   communityId: details.id),
               CommunityPostsSection(posts: posts, community: community),
               _CommunityInfoSection(
@@ -179,11 +167,11 @@ class _CommunityBody extends StatelessWidget {
               if (isLoggedIn)
                 SizedBox(
                     height: 54,
-                    child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: community.color,
-                              foregroundColor: Colors.white,
-                            ),
+                    child: CtaButton(
+                            title: 'Escriu un missatge',
+                            icon: Icons.create_outlined,
+                            foregroundColor: community.onTopColor,
+                            color: community.color,
                             onPressed: () {
                               showModalBottomSheet(
                                   context: context,
@@ -208,23 +196,7 @@ class _CommunityBody extends StatelessWidget {
                                       ),
                                     );
                                   });
-                            },
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  'Crea un post',
-                                  style: TextStyle(
-                                      color: textColor,
-                                      fontSize: 16,
-                                      letterSpacing: -0.5,
-                                      fontWeight: FontWeight.w600),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(width: 8),
-                                const Icon(Icons.create),
-                              ],
-                            ))
+                            })
                         .animate()
                         .fadeIn()
                         .scale(
@@ -233,11 +205,10 @@ class _CommunityBody extends StatelessWidget {
               else
                 SizedBox(
                     height: 54,
-                    child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: community.color,
-                              foregroundColor: Colors.white,
-                            ),
+                    child: CtaButton(
+                            title: 'Uneix-te a la comunitat!',
+                            foregroundColor: community.onTopColor,
+                            color: community.color,
                             onPressed: () {
                               showModalBottomSheet(
                                   context: context,
@@ -260,16 +231,7 @@ class _CommunityBody extends StatelessWidget {
                                           }),
                                     );
                                   });
-                            },
-                            child: Text(
-                              'Uneix-te a la comunitat!',
-                              style: TextStyle(
-                                  color: textColor,
-                                  fontSize: 16,
-                                  letterSpacing: -0.5,
-                                  fontWeight: FontWeight.w600),
-                              textAlign: TextAlign.center,
-                            ))
+                            })
                         .animate()
                         .fadeIn()
                         .scale(

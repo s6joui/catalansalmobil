@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:catalansalmon_flutter/features/community/model/community_details.dart';
 import 'package:catalansalmon_flutter/utils/color_utils.dart';
@@ -15,6 +14,9 @@ class Community {
   final double lat;
   final double lng;
 
+  late final Color onTopColor;
+  late final Color lighterColor;
+
   Community({
     required this.id,
     required this.nom,
@@ -22,7 +24,10 @@ class Community {
     required this.numUsuaris,
     required this.lat,
     required this.lng,
-  });
+  }) {
+    onTopColor = color.computeLuminance() >= 0.56 ? Colors.black : Colors.white;
+    lighterColor = HSLColor.fromColor(color).withLightness(0.75).toColor();
+  }
 
   factory Community.fromCommunityDetails(CommunityDetails details) {
     return Community(
